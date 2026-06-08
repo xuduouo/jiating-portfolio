@@ -743,64 +743,58 @@
         var videoSrc = el.getAttribute('data-video');
         var name = el.querySelector('.char-name').textContent;
 
-        var video = document.getElementById('galleryVideo');
-        var img = document.getElementById('galleryImg');
+        console.log('openGallery called', {imgSrc, videoSrc, name});
+
+        var modal = document.getElementById('galleryModal');
+        var wrap = document.getElementById('galleryMediaWrap');
         var label = document.getElementById('galleryModalLabel');
 
-        // Reset video completely
-        video.pause();
-        video.removeAttribute('src');
-        video.innerHTML = '';
-        video.load();
-        video.style.display = 'none';
-        video.onerror = null;
-
-        // Reset image
-        img.style.display = 'none';
-        img.src = '';
-
-        // Show modal
-        document.getElementById('galleryModal').classList.add('show');
-        document.body.style.overflow = 'hidden';
+        // Reset: clear all children from wrap
+        while (wrap.firstChild) wrap.removeChild(wrap.firstChild);
 
         if (videoSrc) {
-            video.style.display = 'block';
-            // Use src directly (not <source> child) — simplest approach
-            video.src = videoSrc;
-            video.load();
-            video.onerror = function() {
-                // If video fails, fall back to image
-                video.style.display = 'none';
-                img.style.display = 'block';
-                img.src = imgSrc;
-                img.alt = name;
-            };
-            // Try autoplay (may be blocked, that's OK — user can press play)
-            var p = video.play();
-            if (p) p.catch(function(){});
+            // Use exact same pattern as working test-video.html: <video><source>
+            var v = document.createElement('video');
+            v.controls = true;
+            v.playsInline = true;
+            v.style.cssText = 'max-width:92vw;max-height:85vh;border-radius:16px;background:#000;display:block';
+
+            var s = document.createElement('source');
+            s.src = videoSrc;
+            s.type = 'video/mp4';
+            v.appendChild(s);
+
+            v.addEventListener('error', function(e) {
+                console.error('VIDEO ERROR:', v.error ? v.error.code : 'unknown', e);
+            });
+            v.addEventListener('loadedmetadata', function() {
+                console.log('Video metadata loaded');
+                v.play().catch(function(err) {
+                    console.log('Autoplay blocked (normal):', err);
+                });
+            });
+
+            wrap.appendChild(v);
+            console.log('Video element created and appended');
         } else {
-            img.style.display = 'block';
-            img.src = imgSrc;
-            img.alt = name;
+            var i = document.createElement('img');
+            i.src = imgSrc;
+            i.alt = name;
+            i.style.cssText = 'max-width:92vw;max-height:85vh;border-radius:16px;display:block';
+            wrap.appendChild(i);
         }
+
         label.textContent = name;
+        modal.classList.add('show');
+        document.body.style.overflow = 'hidden';
     }
 
     function closeGallery() {
-        var video = document.getElementById('galleryVideo');
-        video.pause();
-        video.removeAttribute('src');
-        video.innerHTML = '';
-        video.load();
-        video.style.display = 'none';
-        video.onerror = null;
-
-        var img = document.getElementById('galleryImg');
-        img.style.display = 'none';
-        img.src = '';
-
+        var modal = document.getElementById('galleryModal');
+        var wrap = document.getElementById('galleryMediaWrap');
+        while (wrap.firstChild) wrap.removeChild(wrap.firstChild);
         document.getElementById('galleryModalLabel').textContent = '';
-        document.getElementById('galleryModal').classList.remove('show');
+        modal.classList.remove('show');
         document.body.style.overflow = '';
     }
 
