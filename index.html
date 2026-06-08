@@ -811,6 +811,11 @@
     document.getElementById('galleryModal').addEventListener('click', function(e) {
         if (e.target === this) closeGallery();
     });
+
+    // Bind gallery item clicks
+    document.querySelectorAll('.gallery-item').forEach(function(el) {
+        el.addEventListener('click', function() { openGallery(this); });
+    });
 </script>
 
 </body>
