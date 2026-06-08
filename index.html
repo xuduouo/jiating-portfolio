@@ -743,83 +743,57 @@
         var videoSrc = el.getAttribute('data-video');
         var name = el.querySelector('.char-name').textContent;
 
-        if (videoSrc) {
-            // Create standalone video overlay — no CSS conflict
-            var overlay = document.createElement('div');
-            overlay.id = 'videoOverlay';
-            overlay.style.cssText = 'position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.92);display:flex;align-items:center;justify-content:center;padding:20px;';
-
-            var video = document.createElement('video');
-            video.controls = true;
-            video.playsInline = true;
-            video.style.cssText = 'max-width:95vw;max-height:90vh;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,0.5);';
-
-            video.addEventListener('error', function() {
-                console.error('Video error:', video.error ? video.error.code : 'unknown');
-            });
-
-            var source = document.createElement('source');
-            source.src = videoSrc;
-            source.type = 'video/mp4';
-            video.appendChild(source);
-            overlay.appendChild(video);
-
-            // Close button
-            var closeBtn = document.createElement('button');
-            closeBtn.innerHTML = '&times;';
-            closeBtn.style.cssText = 'position:fixed;top:20px;right:28px;color:#fff;font-size:36px;background:none;border:none;cursor:pointer;z-index:10000;opacity:0.7;line-height:1;';
-            closeBtn.addEventListener('click', function() { overlay.remove(); document.body.style.overflow = ''; });
-            overlay.appendChild(closeBtn);
-
-            // Character name label
-            var label = document.createElement('div');
-            label.textContent = name;
-            label.style.cssText = 'position:fixed;bottom:36px;left:0;right:0;text-align:center;color:rgba(255,255,255,0.4);font-size:13px;font-weight:500;pointer-events:none;z-index:10000;';
-            overlay.appendChild(label);
-
-            // Click overlay background to close
-            overlay.addEventListener('click', function(e) {
-                if (e.target === overlay) { overlay.remove(); document.body.style.overflow = ''; }
-            });
-
-            // Escape key
-            function onKeydown(e) {
-                if (e.key === 'Escape') { overlay.remove(); document.body.style.overflow = ''; document.removeEventListener('keydown', onKeydown); }
-            }
-            document.addEventListener('keydown', onKeydown);
-
-            document.body.appendChild(overlay);
-            document.body.style.overflow = 'hidden';
-
-            // Start loading
-            video.load();
-            video.play().catch(function(){});
-            return;
-        }
-
-        // Image-only: use existing modal
         var video = document.getElementById('galleryVideo');
         var img = document.getElementById('galleryImg');
         var label = document.getElementById('galleryModalLabel');
 
+        // Reset video completely
         video.pause();
+        video.removeAttribute('src');
+        video.innerHTML = '';
+        video.load();
         video.style.display = 'none';
+        video.onerror = null;
+
+        // Reset image
         img.style.display = 'none';
         img.src = '';
 
+        // Show modal
         document.getElementById('galleryModal').classList.add('show');
         document.body.style.overflow = 'hidden';
 
-        img.style.display = 'block';
-        img.src = imgSrc;
-        img.alt = name;
+        if (videoSrc) {
+            video.style.display = 'block';
+            // Use src directly (not <source> child) — simplest approach
+            video.src = videoSrc;
+            video.load();
+            video.onerror = function() {
+                // If video fails, fall back to image
+                video.style.display = 'none';
+                img.style.display = 'block';
+                img.src = imgSrc;
+                img.alt = name;
+            };
+            // Try autoplay (may be blocked, that's OK — user can press play)
+            var p = video.play();
+            if (p) p.catch(function(){});
+        } else {
+            img.style.display = 'block';
+            img.src = imgSrc;
+            img.alt = name;
+        }
         label.textContent = name;
     }
 
     function closeGallery() {
         var video = document.getElementById('galleryVideo');
         video.pause();
+        video.removeAttribute('src');
+        video.innerHTML = '';
+        video.load();
         video.style.display = 'none';
+        video.onerror = null;
 
         var img = document.getElementById('galleryImg');
         img.style.display = 'none';
