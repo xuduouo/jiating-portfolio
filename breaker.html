@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>任务拆解器 · Jiating</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg: #FBFBFD;
+            --card-bg: #FFFFFF;
+            --accent: #0066FF;
+            --text-main: #1D1D1F;
+            --text-sub: #6E6E73;
+            --border: #E5E5E7;
+            --radius: 28px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, "SF Pro Display", "Helvetica Neue", "PingFang SC", sans-serif; }
+        body { background: var(--bg); color: var(--text-main); -webkit-font-smoothing: antialiased; min-height: 100vh; }
+        .breaker-header { max-width: 800px; margin: 0 auto; padding: 60px 24px 0; }
+        .breaker-header h1 { font-size: 36px; font-weight: 700; margin-bottom: 8px; }
+        .breaker-header p { color: var(--text-sub); font-size: 16px; }
+        .breaker-header a { color: var(--accent); text-decoration: none; font-size: 14px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; }
+        .breaker-header a:hover { opacity: 0.8; }
+        .breaker-area { max-width: 800px; margin: 0 auto; padding: 40px 24px 80px; }
+        .breaker-input-wrap { display: flex; gap: 12px; margin-bottom: 40px; flex-wrap: wrap; }
+        .breaker-input-wrap textarea { flex: 1; min-width: 280px; padding: 18px 24px; border-radius: 16px; border: 1.5px solid var(--border); font-size: 16px; font-family: inherit; resize: vertical; min-height: 56px; line-height: 1.5; outline: none; transition: 0.2s; background: #fff; }
+        .breaker-input-wrap textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0,102,255,0.1); }
+        .breaker-input-wrap textarea::placeholder { color: var(--text-sub); }
+        .breaker-btn { padding: 18px 32px; background: var(--accent); color: #fff; border: none; border-radius: 16px; font-size: 16px; font-weight: 700; cursor: pointer; transition: 0.2s; white-space: nowrap; display: flex; align-items: center; gap: 8px; }
+        .breaker-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+        .breaker-btn:active { transform: translateY(0); }
+        .breaker-result { display: flex; flex-direction: column; gap: 24px; }
+        .breaker-task-card { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 32px; transition: 0.3s; }
+        .breaker-task-card:hover { border-color: #d1d1d6; }
+        .breaker-task-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
+        .breaker-task-header h3 { font-size: 22px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+        .breaker-task-header h3 i { color: var(--accent); }
+        .breaker-badge { font-size: 11px; font-weight: 700; padding: 4px 12px; border-radius: 20px; letter-spacing: 0.03em; }
+        .breaker-sub-list { display: flex; flex-direction: column; gap: 8px; }
+        .breaker-sub-item { display: flex; align-items: flex-start; gap: 12px; padding: 10px 14px; border-radius: 12px; background: var(--bg); transition: 0.2s; }
+        .breaker-sub-item:hover { background: #f0f0f5; }
+        .breaker-sub-item label { display: flex; align-items: center; gap: 12px; cursor: pointer; flex: 1; }
+        .breaker-sub-item input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent); cursor: pointer; margin-top: 2px; flex-shrink: 0; }
+        .breaker-sub-item .sub-text { font-size: 15px; line-height: 1.4; flex: 1; }
+        .breaker-sub-item .sub-text .done-text { text-decoration: line-through; color: var(--text-sub); }
+        .breaker-sub-item .sub-meta { font-size: 12px; font-weight: 600; color: var(--text-sub); white-space: nowrap; display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
+        .breaker-sub-item .sub-meta i { color: var(--accent); font-size: 11px; }
+        .breaker-empty { text-align: center; padding: 80px 20px; color: var(--text-sub); }
+        .breaker-empty i { font-size: 48px; margin-bottom: 16px; opacity: 0.4; }
+        .breaker-empty h3 { font-size: 20px; font-weight: 600; margin-bottom: 8px; }
+        .breaker-empty p { font-size: 14px; }
+        .breaker-quick-suggest { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 32px; align-items: center; }
+        .breaker-quick-btn { padding: 8px 18px; border-radius: 20px; border: 1px solid var(--border); background: #fff; font-size: 13px; font-weight: 500; color: var(--text-sub); cursor: pointer; transition: 0.2s; }
+        .breaker-quick-btn:hover { border-color: var(--accent); color: var(--accent); background: #f5f8ff; }
+        .breaker-quick-btn i { margin-right: 4px; }
+        .breaker-clear { background: none; border: none; color: var(--text-sub); font-size: 13px; cursor: pointer; padding: 8px 12px; border-radius: 8px; transition: 0.2s; }
+        .breaker-clear:hover { background: #f0f0f5; color: #e02020; }
+        @media (max-width: 600px) {
+            .breaker-header h1 { font-size: 28px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="breaker-header">
+        <h1>🧩 任务拆解器</h1>
+        <p>输入你的大目标，自动拆成今天就能动手的小任务。支持多任务同时拆解。</p>
+        <a href="index.html"><i class="fas fa-arrow-left"></i> 返回主页</a>
+    </div>
+
+    <div class="breaker-area">
+        <div class="breaker-quick-suggest" id="quickSuggestions"></div>
+        <div class="breaker-input-wrap">
+            <textarea id="breakerInput" rows="1" placeholder="输入大任务，比如：学AI、准备面试、写短篇小说、做自媒体…&#10;支持一次输入多个，一行一个"></textarea>
+            <button class="breaker-btn" onclick="breakTasks()"><i class="fas fa-wand-magic-sparkles"></i> 拆解</button>
+        </div>
+        <div class="breaker-result" id="breakerResult">
+            <div class="breaker-empty">
+                <i class="fas fa-pencil"></i>
+                <h3>输入一个任务，开始拆解</h3>
+                <p>或者点上面的快捷按钮试试</p>
+            </div>
+        </div>
+    </div>
+
+<script>
+const SUGGESTIONS = [
+    { label: '学 AI', icon: '🤖' },
+    { label: '准备面试', icon: '📋' },
+    { label: '写短篇小说', icon: '✍️' },
+    { label: '做自媒体', icon: '📱' },
+    { label: '搭建个人项目', icon: '🛠️' },
+];
+
+const BREAKER_TEMPLATES = {
+    learning: {
+        keywords: ['学', '学习', '自学', '课程', '读', '看', 'AI', 'ai', '知识', '技能', '掌握'],
+        steps: [
+            { task: '明确学习目标和时间节点', time: '15min', priority: 'high' },
+            { task: '搜集 3-5 个高质量学习资料（课程/文档/博客）', time: '30min', priority: 'high' },
+            { task: '制定学习计划，拆分成 Day 1-7 的每日任务', time: '20min', priority: 'high' },
+            { task: '上手实践 / 做笔记 / 写 Demo', time: '1-2h', priority: 'high' },
+            { task: '整理学习输出（笔记/文章/项目）', time: '30min', priority: 'medium' },
+            { task: '做一次复盘：学到了什么、卡在哪、下一步', time: '15min', priority: 'medium' },
+        ]
+    },
+    interview: {
+        keywords: ['面试', '找工作', '简历', '求职', 'offer', '投递', '岗位', '跳槽'],
+        steps: [
+            { task: '分析目标岗位 JD，圈出 3-5 个核心要求', time: '30min', priority: 'high' },
+            { task: '对照 JD 优化简历，每条经历对标一个要求', time: '1h', priority: 'high' },
+            { task: '整理常见面试题，准备 3 个"你的项目"故事', time: '1h', priority: 'high' },
+            { task: '模拟面试（自问自答 / 找朋友 / AI 模拟）', time: '30min', priority: 'high' },
+            { task: '投递 5-10 家公司，记录投递进度', time: '30min', priority: 'medium' },
+            { task: '每次面试后做 Case 复盘，优化回答', time: '20min', priority: 'medium' },
+        ]
+    },
+    writing: {
+        keywords: ['小说', '写作', '写', '故事', '短篇', '网文', '创作', '文学', '剧本', '文案'],
+        steps: [
+            { task: '确定主题 / 灵感方向（一句话概括故事）', time: '15min', priority: 'high' },
+            { task: '搭建故事大纲：起承转合 / 3 幕结构', time: '40min', priority: 'high' },
+            { task: '设定主要人物（性格、动机、弧光）', time: '30min', priority: 'high' },
+            { task: '写第一稿（不限质量，先写完再说）', time: '1-2h', priority: 'high' },
+            { task: '修改润色：删废话、调节奏、检查逻辑', time: '40min', priority: 'medium' },
+            { task: '找读者反馈 / 朗读一遍找语感问题', time: '20min', priority: 'medium' },
+        ]
+    },
+    social: {
+        keywords: ['自媒体', '小红书', '抖音', 'b站', '公众号', '视频', '内容', '涨粉', '运营', '博主', 'vlog'],
+        steps: [
+            { task: '明确账号定位和目标受众（一句话说清）', time: '20min', priority: 'high' },
+            { task: '分析 5 个同赛道爆款内容，拆解共性', time: '30min', priority: 'high' },
+            { task: '规划本周内容日历（3-5 条选题）', time: '30min', priority: 'high' },
+            { task: '制作并发布一条内容（图文/视频）', time: '1-2h', priority: 'high' },
+            { task: '回复评论 + 研究数据（打开率/互动率）', time: '15min', priority: 'medium' },
+            { task: '每周复盘：什么内容表现好、为什么、下一步', time: '20min', priority: 'medium' },
+        ]
+    },
+    project: {
+        keywords: ['项目', '产品', '开发', '搭建', '做', '构建', 'APP', '小程序', '网页', '原型', 'MVP'],
+        steps: [
+            { task: '一句话定义：解决什么问题、为谁做', time: '15min', priority: 'high' },
+            { task: '列出核心功能清单，圈出 MVP 必须的 1-2 个功能', time: '30min', priority: 'high' },
+            { task: '画出用户操作流程图 / 界面草图', time: '30min', priority: 'high' },
+            { task: '搭好技术框架和项目骨架', time: '1h', priority: 'high' },
+            { task: '用一天跑通核心流程，不纠结细节', time: '2-4h', priority: 'high' },
+            { task: '收尾：部署/展示/记录心得', time: '30min', priority: 'medium' },
+        ]
+    }
+};
+
+const GENERAL_STEPS = [
+    { task: '把大目标写下来，拆成 3-5 个关键结果', time: '10min', priority: 'high' },
+    { task: '每个关键结果再拆成今天能做的具体动作', time: '15min', priority: 'high' },
+    { task: '给每个动作标上优先级和预计时间', time: '10min', priority: 'high' },
+    { task: '从最重要的一件事开始做（25 分钟专注）', time: '25min', priority: 'high' },
+    { task: '复盘：完成了什么、卡在哪、明天做什么', time: '10min', priority: 'medium' },
+];
+
+function detectCategory(task) {
+    const t = task.trim();
+    for (const [cat, rules] of Object.entries(BREAKER_TEMPLATES)) {
+        for (const kw of rules.keywords) {
+            if (t.includes(kw)) return cat;
+        }
+    }
+    return 'general';
+}
+
+function getSteps(category) {
+    if (category === 'general') return GENERAL_STEPS;
+    return BREAKER_TEMPLATES[category].steps;
+}
+
+function getCategoryEmoji(category) {
+    const map = { learning: '📚', interview: '💼', writing: '✍️', social: '📱', project: '🛠️', general: '🎯' };
+    return map[category] || '🎯';
+}
+
+function getCategoryLabel(category) {
+    const map = { learning: '学习', interview: '面试', writing: '写作', social: '自媒体', project: '项目', general: '通用' };
+    return map[category] || '通用';
+}
+
+function saveState(tasks) { try { localStorage.setItem('breaker_tasks', JSON.stringify(tasks)); } catch(e) {} }
+function loadState() {
+    try { const raw = localStorage.getItem('breaker_tasks'); return raw ? JSON.parse(raw) : []; }
+    catch(e) { return []; }
+}
+
+function render() {
+    const container = document.getElementById('breakerResult');
+    const tasks = loadState();
+    if (!tasks.length) {
+        container.innerHTML = '<div class="breaker-empty"><i class="fas fa-pencil"></i><h3>输入一个任务，开始拆解</h3><p>或者点上面的快捷按钮试试</p></div>';
+        return;
+    }
+    container.innerHTML = tasks.map((t, idx) => `
+        <div class="breaker-task-card">
+            <div class="breaker-task-header">
+                <h3><i class="fas fa-check-circle"></i> ${t.raw}</h3>
+                <span class="breaker-badge" style="background: #f0f7ff; color: var(--accent);">${getCategoryEmoji(t.category)} ${getCategoryLabel(t.category)}</span>
+            </div>
+            <div class="breaker-sub-list">
+                ${t.steps.map((s, si) => `
+                    <div class="breaker-sub-item">
+                        <label>
+                            <input type="checkbox" ${s.done ? 'checked' : ''} onchange="toggleSubtask(${idx}, ${si})">
+                            <span class="sub-text ${s.done ? 'done-text' : ''}">${s.task}</span>
+                        </label>
+                        <span class="sub-meta"><i class="far fa-clock"></i> ${s.time}</span>
+                    </div>
+                `).join('')}
+            </div>
+            <div style="margin-top: 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+                <span style="font-size: 13px; color: var(--text-sub);">${t.steps.filter(s => s.done).length}/${t.steps.length} 已完成</span>
+                <button class="breaker-clear" onclick="removeTask(${idx})"><i class="fas fa-trash-alt"></i> 删除</button>
+            </div>
+        </div>
+    `).join('');
+}
+
+function breakTasks() {
+    const input = document.getElementById('breakerInput');
+    const raw = input.value.trim();
+    if (!raw) return;
+    const taskLines = raw.split(/[\n,;、。]/).map(s => s.trim()).filter(s => s.length > 0);
+    if (!taskLines.length) return;
+    const existing = loadState();
+    for (const line of taskLines) {
+        const category = detectCategory(line);
+        const templateSteps = getSteps(category);
+        const steps = templateSteps.map(s => ({ task: s.task, time: s.time, priority: s.priority, done: false }));
+        existing.push({ id: Date.now() + '_' + Math.random().toString(36).slice(2, 6), raw: line, category, icon: 'check-circle', priority: 'medium', steps, createdAt: Date.now() });
+    }
+    saveState(existing);
+    input.value = '';
+    render();
+}
+
+function toggleSubtask(taskIdx, stepIdx) {
+    const tasks = loadState();
+    if (!tasks[taskIdx]) return;
+    tasks[taskIdx].steps[stepIdx].done = !tasks[taskIdx].steps[stepIdx].done;
+    saveState(tasks);
+    render();
+}
+
+function removeTask(idx) {
+    const tasks = loadState();
+    tasks.splice(idx, 1);
+    saveState(tasks);
+    render();
+}
+
+function initQuickSuggestions() {
+    const container = document.getElementById('quickSuggestions');
+    container.innerHTML = SUGGESTIONS.map(s => `<button class="breaker-quick-btn" onclick="quickSuggest('${s.label}')"><i class="fas fa-bolt"></i> ${s.icon} ${s.label}</button>`).join('');
+    container.innerHTML += '<button class="breaker-clear" onclick="clearAllTasks()"><i class="fas fa-trash-alt"></i> 清空所有</button>';
+}
+
+function quickSuggest(label) {
+    document.getElementById('breakerInput').value = label;
+    document.getElementById('breakerInput').focus();
+}
+
+function clearAllTasks() {
+    if (loadState().length && !confirm('确定清空所有任务？')) return;
+    saveState([]);
+    render();
+}
+
+initQuickSuggestions();
+render();
+</script>
+</body>
+</html>
