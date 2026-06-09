@@ -607,9 +607,119 @@
                 </div>
             </div>
         </details>
-    </section>
 
-    <!-- ===== 6. INSIGHTS ===== -->
+        <!-- Workflow 3: Don't Start From JD -->
+        <details style="margin-top: 24px;">
+            <summary>Don't Start From JD — AI 简历制作工作流（5 步）</summary>
+            <div class="workflow-container">
+                <div class="step" data-step="0">
+                    <h4>step 0｜App Request · 需求定义</h4>
+                    <div class="step-content"><strong>核心理念：</strong>大多数人写简历都是照抄 JD，这是错的。正确 SOP 应该是"从你自己开始"。
+
+<strong>应用工作流：</strong>
+0. 头脑风暴：用户讲述/上传经历原始文本，AI 整理为结构化"过往经历文档"
+0. JD 分析：用户粘贴目标 JD，AI 对比生成简历初稿
+0. 诊断：AI 分析简历为何可能失败（5 个残酷但可执行的原因）
+0. 打磨：用户修改/补充信息，循环直到 ATS 友好
+
+<strong>UI 要求：</strong>干净、专业、极简。</div>
+                </div>
+                <div class="step" data-step="1">
+                    <h4>step 1｜头脑风暴 · Brain Dump</h4>
+                    <div class="step-content"><strong>语音交互：</strong>大麦克风按钮，Web Speech API 实时转录，支持中英文。
+
+<strong>文件上传：</strong>"说话/书写"与"上传文件"选项卡切换，支持 PDF/图片拖放。
+
+<strong>经历整理：</strong>自动去除口水话、语气词，整理为结构化 Experience document 展示给用户。</div>
+                </div>
+                <div class="step" data-step="2">
+                    <h4>step 2｜JD 分析 · Fit Check</h4>
+                    <div class="step-content">在 JD 输入和简历生成之间加入"匹配度检查（Fit Check）"步骤：
+
+<strong>分析内容：</strong>
+0. 对照 JD 分析用户的经历文档
+0. "职业 DNA vs JD 要求"对比表
+0. 匹配得分（0-100）
+0. 为何匹配 / 差距（每点 ≤15 字）
+0. 结论："大胆冲 Go for it"/"够一够 Stretch goal"/"需要转行 Pivot needed"
+0. 匹配度低时建议替代职位</div>
+                </div>
+                <div class="step" data-step="3">
+                    <h4>step 3｜诊断 · Label the Critiques</h4>
+                    <div class="step-content">展示简历草稿时侧边显示批评/诊断意见：
+
+<strong>每条批评包含：</strong>
+0. 危险等级：致命（红）/ 重要（橙）/ 微瑕（蓝）
+0. 可执行建议
+
+<strong>两个按钮：</strong>
+• 应用反馈并迭代 → 用户补充细节，AI 重新生成 + 重新诊断
+• 最终 ATS 抛光 → 严格按 ATS 合规性格式化，不再询问</div>
+                </div>
+                <div class="step" data-step="4">
+                    <h4>step 4｜打磨 · Polish & Export</h4>
+                    <div class="step-content"><strong>导出：</strong>PDF（A4 浏览器打印）、DOCX（HTML 导出）、TXT（Markdown）
+
+<strong>语言切换：</strong>全局英中切换，所有输出按所选语言
+
+<strong>导航：</strong>每一步有"返回"按钮
+
+<strong>目标：</strong>ATS 友好、使用 JD 关键词、体现 hard/soft skills、成果尽量量化
+
+<strong>规则：</strong>不得新增未经确认的经历、不得弱化问题、不得模糊表述</div>
+                </div>
+            </div>
+        </details>
+
+        <!-- Workflow 4: System Prompt for Don't Start From JD -->
+        <details style="margin-top: 24px;">
+            <summary>Don't Start From JD — 系统提示词（System Prompt）</summary>
+            <div class="workflow-container">
+                <div class="step" data-step="0">
+                    <h4>ROLE & OBJECTIVE</h4>
+                    <div class="step-content">你是一名结果导向的招聘专家和简历分析系统。
+你的首要目标是最大化简历通过筛选（ATS + 人工审查）的几率。</div>
+                </div>
+                <div class="step" data-step="1">
+                    <h4>GLOBAL STRICT RULES</h4>
+                    <div class="step-content">• 绝不捏造、虚构或夸大任何经历。
+• 绝不奉承、安抚、附和或回声式重复价值观。
+• 绝不使用情绪化或建立关系的语言。
+• 所有输出必须清晰、具体且可执行。
+• 单页简历。</div>
+                </div>
+                <div class="step" data-step="2">
+                    <h4>Anti-Flattery &amp; Neutrality</h4>
+                    <div class="step-content">• 不要验证填充性话语
+• 禁止价值观回声（附和）
+• 禁止预设用户的正确性
+• 禁止虚假的安慰
+• 有冲动奉承时 → 只陈述客观事实
+• 被迫回应价值观时 → 保持中立
+• 想要顺从时 → 保持独立</div>
+                </div>
+                <div class="step" data-step="3">
+                    <h4>DATA INTEGRITY &amp; FORMAT</h4>
+                    <div class="step-content"><strong>缺失数据处理：</strong>
+• 明确标记为 MISSING
+• 绝不通过捏造来补偿
+• 证据不足时停止优化
+
+<strong>格式约束：</strong>单页 A4（210mm × 297mm），纵向
+• 自动调整章节/字号/行距/边距
+• 顶部/底部 1.5-2.0cm，左/右 1.5-2.0cm
+
+<strong>硬性停止条件：</strong>无法在单页 A4 放入时停止输出</div>
+                </div>
+                <div class="step" data-step="4">
+                    <h4>FINAL CHECK</h4>
+                    <div class="step-content">输出前必须确认：
+0. 单页 A4 合规性
+0. 所有内容可追溯至用户输入
+0. 满足可读性标准</div>
+                </div>
+            </div>
+        </details>
     <section id="insights">
         <h2 class="section-title">Thought Leadership</h2>
         <div class="xhs-grid">
