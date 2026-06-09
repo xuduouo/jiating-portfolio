@@ -68,11 +68,9 @@
         .btn-secondary:hover { background: #e5e5ea; }
 
         /* 3. CAREER BENTO */
-        .bento-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+        .bento-grid { display: flex; flex-direction: column; gap: 24px; }
         .card { background: var(--card-bg); border-radius: var(--radius); padding: 36px; border: 1px solid var(--border); transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
         .card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.03); border-color: #d1d1d6; }
-        .large { grid-column: span 2; }
-        .full { grid-column: span 3; }
         .tag-label { font-size: 11px; font-weight: 600; text-transform: uppercase; color: var(--accent); letter-spacing: 0.08em; margin-bottom: 16px; display: block; }
         .card h3 { font-size: 28px; font-weight: 700; margin-bottom: 18px; }
         .card p { color: var(--text-sub); font-size: 16px; line-height: 1.6; }
@@ -168,10 +166,10 @@
             .hero h1 { font-size: 48px; }
             .hero p { max-width: 100%; }
             .hero-img { width: 100%; height: 360px; flex: none; }
-            .bento-grid, .xhs-grid, .product-grid { grid-template-columns: 1fr; }
+            .bento-grid, .xhs-grid { grid-template-columns: 1fr; }
+            .product-grid { grid-template-columns: repeat(2, 1fr); }
             .lang-switch { top: -45px; right: 20px; }
             .vibe-content { padding: 24px; }
-            .card.large, .card.full { grid-column: span 1; }
         }
         @media (max-width: 600px) {
             .hero h1 { font-size: 36px; }
@@ -441,7 +439,7 @@
         <div class="bento-grid">
 
             <!-- 西湖心辰 -->
-            <div class="card large">
+            <div class="card">
                 <span class="tag-label">2026.03 - 2026.06</span>
                 <h3>西湖心辰 · AI 内容运营实习生</h3>
                 <p style="margin-bottom: 16px;">负责 AI 角色产品的内容运营全链路，覆盖 Prompt 编写、文生图、角色素材、短视频物料及 UGC 审核。</p>
@@ -480,7 +478,7 @@
             </div>
 
             <!-- EVE AI -->
-            <div class="card large">
+            <div class="card">
                 <span class="tag-label">2025.05 - 2025.08</span>
                 <h3>EVE · AI 语料运营实习生</h3>
                 <p style="margin-bottom: 16px;">专注 AI 对话质量优化与语料工程，覆盖陪伴、情绪安抚、关系推进等高频场景。</p>
@@ -508,7 +506,7 @@
             </div>
 
             <!-- Skills -->
-            <div class="card full">
+            <div class="card">
                 <span class="tag-label">Skills & Expertise</span>
                 <h3>My Toolbox</h3>
                 <p style="margin-bottom: 16px;">AI 内容运营 × Prompt 工程 × 数据驱动 × 产品思维</p>
@@ -537,17 +535,14 @@
     <section id="tools">
         <h2 class="section-title">AI Tools I Use</h2>
         <div class="product-grid">
-            <div class="p-card"><div class="p-logo"><i class="fas fa-comment-dots"></i></div><h4>Claude</h4><p>主力 AI 编程助手。Code generation, debugging, architecture design 都靠它提速。</p><a href="https://claude.ai" target="_blank" class="p-link">Explore →</a></div>
-            <div class="p-card"><div class="p-logo"><i class="fas fa-brain"></i></div><h4>Cursor</h4><p>AI-native IDE，用 Claude 驱动的代码编辑器，让编程效率翻倍。</p><a href="https://cursor.sh" target="_blank" class="p-link">Explore →</a></div>
-            <div class="p-card"><div class="p-logo"><i class="fas fa-vr-cardboard"></i></div><h4>Faces</h4><p>快速搭建个人主页和组件界面的无代码工具，好看且高效。</p><a href="https://faces.app" target="_blank" class="p-link">Explore →</a></div>
-            <div class="p-card"><div class="p-logo"><i class="fas fa-podcast"></i></div><h4>NotebookLM</h4><p>AI 知识库，最适合将复杂研究材料提炼为结构化笔记和思维导图。</p><a href="https://notebooklm.google.com" target="_blank" class="p-link">Explore →</a></div>
-            <div class="p-card"><div class="p-logo"><i class="fas fa-video"></i></div><h4>Gemini</h4><p>多模态研究伙伴，处理长上下文、多模态推理非常强。</p><a href="https://aistudio.google.com" target="_blank" class="p-link">Explore →</a></div>
-            <div class="p-card"><div class="p-logo"><i class="fas fa-wand-magic-sparkles"></i></div><h4>LongCut</h4><p>AI 长视频处理工具，高效提取视频内容的核心价值。</p><a href="https://www.longcut.ai" target="_blank" class="p-link">Explore →</a></div>
-            <div class="p-card"><div class="p-logo"><i class="fas fa-head-side-virus"></i></div><h4>Podwise</h4><p>将音频内容转为结构化文字和思维导图，高效学习利器。</p><a href="https://apps.apple.com/us/app/podwise-podcasts-notes-ai/id6499190232" target="_blank" class="p-link">Explore →</a></div>
-            <div class="p-card"><div class="p-logo"><i class="fas fa-search"></i></div><h4>点点</h4><p>小红书精准搜索工具，快速定位和总结社交数据。</p><a href="https://apps.apple.com/cn/app/id6529536122" target="_blank" class="p-link">Explore →</a></div>
-            <div class="p-card"><div class="p-logo"><i class="fas fa-layer-group"></i></div><h4>Figma</h4><p>产品设计和协作利器。用于搭建角色产品的工作流、UI 设计、交互原型。</p><a href="https://www.figma.com" target="_blank" class="p-link">Explore →</a></div>
-            <div class="p-card"><div class="p-logo"><i class="fas fa-brain"></i></div><h4>Obsidian</h4><p>本地知识库管理。搭建了 Prompt + 图片的知识库体系，结构化沉淀团队资产。</p><a href="https://obsidian.md" target="_blank" class="p-link">Explore →</a></div>
-            <div class="p-card"><div class="p-logo"><i class="fas fa-palette"></i></div><h4>Maso</h4><p>快速画产品草图的工具，用于早期方案沟通和交互流程设计。</p><a href="#" target="_blank" class="p-link">Explore →</a></div>
+            <div class="p-card"><div class="p-logo"><i class="fas fa-podcast"></i></div><h4>NotebookLM</h4><p>My essential knowledge base. Designed for synthesizing complex research into structured maps.</p><a href="#" target="_blank" class="p-link">View usage →</a></div>
+            <div class="p-card"><div class="p-logo"><i class="fas fa-vr-cardboard"></i></div><h4>Faces</h4><p>No-code engine for rapid portfolio and widget deployment. Built for speed and aesthetics.</p><a href="#" target="_blank" class="p-link">View usage →</a></div>
+            <div class="p-card"><div class="p-logo"><i class="fas fa-robot"></i></div><h4>Gemini 3</h4><p>Primary multimodal research and writing partner. High-context reasoning at scale.</p><a href="#" target="_blank" class="p-link">View usage →</a></div>
+            <div class="p-card"><div class="p-logo"><i class="fas fa-heart"></i></div><h4>RIZZ</h4><p>Tactical communication assistant for social dynamics and relationship management.</p><a href="#" target="_blank" class="p-link">View usage →</a></div>
+            <div class="p-card"><div class="p-logo"><i class="fas fa-film"></i></div><h4>LongCut</h4><p>AI-native intelligence for processing long-form video content. Highly efficient learning.</p><a href="#" target="_blank" class="p-link">View usage →</a></div>
+            <div class="p-card"><div class="p-logo"><i class="fas fa-headphones"></i></div><h4>Podwise</h4><p>Converts audio streams into structured transcripts and mental models instantly.</p><a href="#" target="_blank" class="p-link">View usage →</a></div>
+            <div class="p-card"><div class="p-logo"><i class="fas fa-search"></i></div><h4>Diandian</h4><p>A precision search and summary tool optimized for Xiaohongshu social data.</p><a href="#" target="_blank" class="p-link">View usage →</a></div>
+            <div class="p-card"><div class="p-logo"><i class="fas fa-plane"></i></div><h4>PI Travel</h4><p>Intelligent collaborative travel planning assistant for modern social explorers.</p><a href="#" target="_blank" class="p-link">View usage →</a></div>
         </div>
     </section>
 
