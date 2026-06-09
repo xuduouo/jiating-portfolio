@@ -51,11 +51,8 @@
 
         /* 2. VIBE CODING */
         .vibe-grid { display: flex; flex-direction: column; gap: 40px; }
-        .vibe-card { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 0; display: flex; flex-direction: row; align-items: stretch; overflow: hidden; transition: 0.3s; }
+        .vibe-card { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 40px; transition: 0.3s; }
         .vibe-card:hover { border-color: var(--accent); box-shadow: 0 10px 30px rgba(0,0,0,0.03); }
-        .vibe-video { flex: 0 0 50%; width: 50%; background: #000; border-radius: 0; display: flex; align-items: center; }
-        .vibe-video img { width: 100%; height: 100%; object-fit: cover; }
-        .vibe-content { padding: 40px; flex: 1; display: flex; flex-direction: column; justify-content: center; }
         .vibe-content h3 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
         .vibe-tags { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
         .vibe-tag { background: #F2F2F7; color: var(--text-sub); padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; }
@@ -173,8 +170,6 @@
             .hero-img { width: 100%; height: 360px; flex: none; }
             .bento-grid, .xhs-grid, .product-grid { grid-template-columns: 1fr; }
             .lang-switch { top: -45px; right: 20px; }
-            .vibe-card { flex-direction: column; }
-            .vibe-video { flex: none; width: 100%; height: auto; }
             .vibe-content { padding: 24px; }
             .card.large, .card.full { grid-column: span 1; }
         }
@@ -228,10 +223,6 @@
 
             <!-- Build 1: 小手机 -->
             <div class="vibe-card">
-                <div class="vibe-video" style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); justify-content: center; text-align: center; color: #fff; font-size: 60px; min-height: 280px;">
-                    📱✨
-                    <div style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); font-size: 14px; opacity: 0.7;">AI Roleplay App</div>
-                </div>
                 <div class="vibe-content">
                     <h3>小手机 — AI 角色扮演</h3>
                     <div class="vibe-tags">
@@ -254,10 +245,6 @@
 
             <!-- Build 2: 审计底稿 Agent -->
             <div class="vibe-card">
-                <div class="vibe-video" style="background: linear-gradient(135deg, #1b1b2f 0%, #162447 50%, #1f4068 100%); justify-content: center; text-align: center; color: #fff; font-size: 60px; min-height: 280px;">
-                    📋🔍
-                    <div style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); font-size: 14px; opacity: 0.7;">Audit AI Agent</div>
-                </div>
                 <div class="vibe-content">
                     <h3>审计底稿可信 Agent</h3>
                     <div class="vibe-tags">
@@ -280,10 +267,6 @@
 
             <!-- Build 3: Character Analysis Dashboard -->
             <div class="vibe-card">
-                <div class="vibe-video" style="background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%); justify-content: center; text-align: center; color: #fff; font-size: 60px; min-height: 280px;">
-                    📊📈
-                    <div style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); font-size: 14px; opacity: 0.7;">Character Data Pipeline</div>
-                </div>
                 <div class="vibe-content">
                     <h3>AI 角色数据分析平台</h3>
                     <div class="vibe-tags">
@@ -305,10 +288,6 @@
 
             <!-- Build 3: Image Gen Pipeline -->
             <div class="vibe-card">
-                <div class="vibe-video" style="background: linear-gradient(135deg, #141e30 0%, #243b55 100%); justify-content: center; text-align: center; color: #fff; font-size: 60px; min-height: 280px;">
-                    🎨⚡
-                    <div style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); font-size: 14px; opacity: 0.7;">Batch Image Generation</div>
-                </div>
                 <div class="vibe-content">
                     <h3>批量生图 Prompt 管线</h3>
                     <div class="vibe-tags">
@@ -330,10 +309,6 @@
 
             <!-- Build 4: Prompt Workflow System -->
             <div class="vibe-card">
-                <div class="vibe-video" style="background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%); justify-content: center; text-align: center; color: #fff; font-size: 60px; min-height: 280px;">
-                    🤖⚡
-                    <div style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); font-size: 14px; opacity: 0.7;">Multi-agent System</div>
-                </div>
                 <div class="vibe-content">
                     <h3>AI Character Prompt Generator</h3>
                     <div class="vibe-tags">
