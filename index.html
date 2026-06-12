@@ -741,42 +741,104 @@
                 </div>
             </div>
         </details>
-        <!-- Workflow 5: 吃播视频生产 SOP -->
+                <!-- Workflow 5: 吃播视频生产 SOP -->
         <details style="margin-top: 24px;">
             <summary>🎬 吃播视频生产 SOP</summary>
             <div class="workflow-container">
                 <div class="step" data-step="1">
                     <h4>一、前期准备</h4>
                     <div class="step-content">
-                        <strong>1.1 下载对标视频</strong> — 从小红书 / 抖音 / B 站筛选爆款吃播视频，保存至本地。<br><br>
-                        <strong>1.2 画面分析</strong> — 在 Codex 中使用 video-scene-analyzer 自动分析每 2 秒抽取帧识别场景边界，输出场景列表、镜头角度、景别、色调等元数据。<br><br>
-                        <strong>1.3 自建 Skill</strong> — 将分析流程封装为可复用 Skill，单条视频分析从 30 分钟缩短到 2-3 分钟，新人无需理解底层即可使用。<br><br>
+                        <strong>1.1 下载对标视频</strong><br>
+                        从小红书 / 抖音 / B 站筛选爆款吃播视频，保存至本地 <code style="background: #f0f0f2; padding: 2px 6px; border-radius: 4px;">D:\\吃播视频\</code>。<br><br>
+
+                        <strong>1.2 画面分析</strong><br>
+                        在 Codex 中执行：<br><br>
+                        <code style="background: #f0f0f2; padding: 2px 6px; border-radius: 4px;">分析 D:\\吃播视频\{文件名}.mp4 的画面。先检查 ffmpeg 和 ffprobe 是否安装，然后用 video-scene-analyzer skill 的流程：每 2 秒抽取一帧识别场景边界，对每个场景分析镜头角度、景别、色调、灯光、文字、转场，输出 analysis.json 和资产库。最后根据分析结果写一个 AI 视频生成的分镜脚本 prompt，中文输出。</code><br><br>
+
+                        <strong>1.3 自建 Skill：一键分析→生成分镜 Prompt</strong><br>
+                        将上述画面分析流程封装为可复用的 Skill，在 Codex / Claude Code 中可直接调用：<br><br>
+                        <code style="background: #f0f0f2; padding: 2px 6px; border-radius: 4px;">分析 D:\\吃播视频\{文件名}.mp4 的画面。用 video-scene-analyzer skill 的流程：每 2 秒抽取一帧识别场景边界，对每个场景分析镜头角度、景别、色调、灯光、文字、转场，输出 analysis.json 和资产库。最后根据分析结果写一个 AI 视频生成的分镜脚本 prompt，中文输出。</code><br><br>
+
+                        <strong>Skill 价值：</strong><br>
+                        • 从「手动逐帧看画面」变为「一句话自动分析」，单条视频分析时间从 30 分钟缩短到 2-3 分钟<br>
+                        • 输出标准化：每次按统一 schema 生成场景列表、资产库和分镜表，保证 Prompt 质量稳定<br>
+                        • 可跨团队复用：新人只需装好 Skill + ffmpeg，直接对话即可完成分析，无需理解底层技术细节<br><br>
+
                         <a href="https://tw7qvijoe4b.feishu.cn/wiki/D6vowf0OyiCu4jktc0GcMhlYnzb" target="_blank" style="color: var(--accent); font-weight: 600;">查看完整文档 →</a>
                     </div>
                 </div>
                 <div class="step" data-step="2">
                     <h4>二、Prompt 生成</h4>
                     <div class="step-content">
-                        <strong>首图/封面图</strong> — 在 Midjourney / 即梦 / 可灵生成 9:16 竖屏高清封面。<br><br>
-                        <strong>前 6 秒 Prompt</strong> — 详细的人物、场景、食物描述 + ASMR 音效说明，关键规则：无字幕。<br><br>
-                        <strong>完整分镜脚本</strong> — 根据 scene-analyzer 分析结果转换为 11 个分镜的逐镜脚本（76 秒），涵盖中近景、近景、极近景嘴部特写等景别。
-                        <br><br>
-                        <span style="color: var(--accent); font-weight: 600;">11 分镜 · 76 秒 · 固定机位</span>
+                        <strong>2.1 首图 / 封面图</strong><br>
+                        在 Midjourney / 即梦 / 可灵中生成封面图，输出格式：9:16 竖屏，高清写实。<br><br>
+
+                        <strong>2.2 视频 Prompt（前 6 秒）</strong><br>
+                        <span style="color: #ff2442; font-weight: 700;">关键规则：无字幕。无字幕。无字幕。</span><br><br>
+                        这段高清视频中,一位肤色黝黑的年轻女子坐在舒适卧室的床上。她一头长长的直发,左侧别着一个白色的小发夹。她的妆容精致考究,浓密的眼线,深色睫毛,以及淡淡的裸色唇彩。她身穿一件黑色拉链连帽衫,内搭一件白衬衫,戴着一条细细的银项链,上面挂着一个小吊坠。她面前摆着一大盘金黄色的炸鸡腿和鸡翅,堆得高高的,看起来非常美味。背景是一个柔和暖色调的房间,紫色的灯串沿着墙壁垂挂。背景笼罩在紫色的氛围灯中。墙上挂着两幅相框,其中一幅散发着淡淡的光芒,增添了一丝氛围。女人的右侧,床头柜上摆放着一盏小灯和一些床铺着白色床单和白色床头板,营个舒适私密的空间。包括一个粉色的小雕像。她身后的多适的氛围。整体布置营造出一女人说:"If a man does not ask Jut, then he does not like you."说完,女人拿起一只鸡腿开始吃。她咀嚼着,吞咽着。每一个动作都在原本寂静的房间里营造出丰富的ASMR音效。<br><br>
+
+                        <strong>2.3 完整分镜 Prompt（76 秒）</strong><br>
+                        根据 scene-analyzer 的分析结果，转换为完整分镜脚本：<br><br>
+                        <code style="background: #f0f0f2; padding: 2px 6px; border-radius: 4px;">请生成一条 9:16 竖屏高清视频，写实照片质感，时长约 76 秒。无字幕。无字幕。无字幕。</code><br><br>
+                        这段高清视频中，一位红发年轻男性坐在温暖舒适的室内餐桌前。他有一头湿润蓬松的红色短发，发丝凌乱但精致，肤色白皙，五官立体，妆容干净，眼神直接看向镜头。他身穿一件紫色缎面开领衬衫，衣料带着柔和的反光，领口微微敞开，脖颈和锁骨在暖光下清晰可见。他戴着透明一次性手套，坐姿放松，像是在进行一场私密而沉浸的吃播。镜头始终是正面眼平视角，固定机位，人物居中，木质桌面占据画面下半部分。背景是柔和暖色调的室内餐厅或厨房，灰褐色墙面、顶部暖灯和后方柜体虚化在浅景深里，整体氛围安静、亲近、带有深夜吃播的 ASMR 质感。<br><br>
+                        他的面前摆着大量油亮的牛大肠、长条肠类食物、厚切肉块和各种蘸料。食物堆得很高，棕红色的肠类表面泛着油光，肉块外层焦褐，切面肥瘦分明，看起来厚重而多汁。桌边还有一杯透明柠檬冰饮，杯壁带着水汽，后段会出现黑色餐具、黄色柠檬片、绿色腌菜、红色辣椒蘸酱和吃完后的空盘纸巾。全片没有字幕，没有任何文字叠加，没有 logo，没有水印。<br><br>
+                        <span style="color: var(--accent); font-weight: 600;">详见下方分镜表 ↓</span>
+                    </div>
+                </div>
+                <div class="step" data-step="n">
+                    <h4>分镜表（11 分镜 · 76 秒）</h4>
+                    <div class="step-content" style="overflow-x: auto;">
+                        <table style="width:100%; border-collapse: collapse; font-size: 13px; margin: 8px 0;">
+                            <tr style="background: var(--accent); color: #fff;">
+                                <th style="padding: 8px 10px; border: 1px solid var(--border); text-align: center;">分镜</th>
+                                <th style="padding: 8px 10px; border: 1px solid var(--border); text-align: center;">时间</th>
+                                <th style="padding: 8px 10px; border: 1px solid var(--border); text-align: center;">景别</th>
+                                <th style="padding: 8px 10px; border: 1px solid var(--border);">画面内容</th>
+                            </tr>
+                            <tr><td style="padding: 8px 10px; border: 1px solid var(--border); text-align: center; font-weight: 600;">1</td><td style="padding: 8px 10px; border: 1px solid var(--border); text-align: center;">0:00-0:09</td><td style="padding: 8px 10px; border: 1px solid var(--border); text-align: center;">中近景</td><td style="padding: 8px 10px; border: 1px solid var(--border);">红发男性坐在木桌后，面前堆满牛大肠、长条肠类食物和厚切肉块，左侧有一杯柠檬冰饮。他戴着透明手套，对镜头自然开场，轻轻抬手整理手套或准备拿起食物，表情亲切。食物占据下半画面，人物脸部和紫色缎面衬衫在暖光中清晰可见。硬切。</td></tr>
+                            <tr style="background: #fff;"><td style="padding: 8px 10px; border: 1px solid var(--border); text-align: center; font-weight: 600;">2</td><td style="padding: 8px 10px; border: 1px solid var(--border); text-align: center;">0:09-0:11</td><td style="padding: 8px 10px; border: 1px solid var(--border); text-align: center;">近景</td><td style="padding: 8px 10px; border: 1px solid var(--border);">男人把一块肥瘦分层的方形肉块举到镜头前，肉块靠近镜头成为前景主体，外层焦褐，切面肥瘦清晰，油脂有真实反光。他在后方微笑看着镜头，脸部略微虚化。硬切。</td></tr>
+                            <tr><td style="padding: 8px 10px; border: 1px solid var(--border); text-align: center; font-weight: 600;">3</td><td style="padding: 8px 10px; border: 1px solid var(--border); text-align: center;">0:11-0:19</td><td style="padding: 8px 10px; border: 1px solid var(--border); text-align: center;">中近景</td><td style="padding: 8px 10px; border: 1px solid var(--border);">他拿起一根长条牛大肠或香肠开始咬食，咬下后慢慢咀嚼、吞咽，动作自然。桌面仍然是层叠的大肠和肉块，食物表面油亮，入口时有轻微拉扯感。人物表情带一点满足和专注。硬切。</td></tr>
+                            <tr style="background: #fff;"><td style="padding: 8px 10px; border: 1px solid var(--border); text-align: center; font-weight: 600;">4</td><td style="padding: 8px 10px; border: 1px solid var(--border); text-align: center;">0:19-0:29</td><td style="padding: 8px 10px; border: 1px solid var(--border); text-align: center;">中近景</td><td style="padding: 8px 10px; border: 1px solid var(--border);">白盘中一圈圈牛大肠更清楚，右侧出现白色小碗橙红色辣椒粉蘸料。他先举起一块滴汁的肉展示，汁液从食物边缘缓慢下落，然后把肠类食物蘸入调料再送入口中。重点表现滴汁、蘸粉、油光和入口瞬间。硬切。</td></tr>
+                            <tr><td style="padding: 8px 10px; border: 1px solid var(--border); text-align: center; font-weight: 600;">5</td><td style="padding: 8px 10px; border: 1px solid var(--border); text-align: center;">0:29-0:39</td><td style="padding: 8px 10px; border: 1px solid var(--border); text-align: center;">中近景</td><td style="padding: 8px 10px; border: 1px solid var(--border);">桌面换成红棕色长条香肠或肠类食物盘，他手持一根较长的肠反复咬食。食物在牙齿间断开，表面油光明显，咀嚼动作安静而清晰。紫色衬衫在暖光下反射柔和光泽。硬切。</td></tr>
+                            <tr style="background: #fff;"><td style="padding: 8px 10px; border: 1px solid var(--border); text-align: center; font-weight: 600;">6</td><td style="padding: 8px 10px; border: 1px solid var(--border); text-align: center;">0:39-0:49</td><td style="padding: 8px 10px; border: 1px solid var(--border); text-align: center;">中近景</td><td style="padding: 8px 10px; border: 1px solid var(--border);">桌面更换为堆叠的金黄色矩形煎炸食物，旁边有浅色蘸汁小碗。他把一块煎炸食物举到镜头前，展示金黄外皮和微焦边缘，然后蘸入酱汁侧头咬下。外皮酥脆内部柔软，咀嚼时有轻微脆响。硬切。</td></tr>
+                            <tr><td style="padding: 8px 10px; border: 1px solid var(--border); text-align: center; font-weight: 600;">7</td><td style="padding: 8px 10px; border: 1px solid var(--border); text-align: center;">0:49-0:55</td><td style="padding: 8px 10px; border: 1px solid var(--border); text-align: center;">近景</td><td style="padding: 8px 10px; border: 1px solid var(--border);">桌面出现卤肉烤肉组合、红色辣椒蘸酱和肠类食物。他双手拿起一块大肉靠近嘴边撕咬，动作比前面更用力表情专注。画面突出酱汁、油脂、肉纤维和被咬开的断面。硬切。</td></tr>
+                            <tr style="background: #fff;"><td style="padding: 8px 10px; border: 1px solid var(--border); text-align: center; font-weight: 600;">8</td><td style="padding: 8px 10px; border: 1px solid var(--border); text-align: center;">0:55-0:57</td><td style="padding: 8px 10px; border: 1px solid var(--border); text-align: center;">极近景嘴部特写</td><td style="padding: 8px 10px; border: 1px solid var(--border);">镜头贴近他的嘴唇、下巴和手中的肉块，背景高度虚化。他咬住肉块，红色油汁从下巴缓慢滴落。强调食物质感、红油、咬合动作和 ASMR 冲击。硬切。</td></tr>
+                            <tr><td style="padding: 8px 10px; border: 1px solid var(--border); text-align: center; font-weight: 600;">9</td><td style="padding: 8px 10px; border: 1px solid var(--border); text-align: center;">0:57-1:05</td><td style="padding: 8px 10px; border: 1px solid var(--border); text-align: center;">中近景</td><td style="padding: 8px 10px; border: 1px solid var(--border);">桌面切换为黑色碗盘和多样配菜组合（黄色柠檬片、绿色腌菜、肉肠）。他用筷子夹起柠檬片、绿色配菜和肉类继续吃。黑色餐具与黄色柠檬形成对比。硬切。</td></tr>
+                            <tr style="background: #fff;"><td style="padding: 8px 10px; border: 1px solid var(--border); text-align: center; font-weight: 600;">10</td><td style="padding: 8px 10px; border: 1px solid var(--border); text-align: center;">1:05-1:11</td><td style="padding: 8px 10px; border: 1px solid var(--border); text-align: center;">中近景</td><td style="padding: 8px 10px; border: 1px solid var(--border);">桌上只剩部分肠类食物和透明柠檬冰饮。他咀嚼后拿起杯子喝水，冰块和柠檬片在杯中晃动。随后桌面食物基本吃完，他用纸巾擦嘴，动作放慢。硬切。</td></tr>
+                            <tr><td style="padding: 8px 10px; border: 1px solid var(--border); text-align: center; font-weight: 600;">11</td><td style="padding: 8px 10px; border: 1px solid var(--border); text-align: center;">1:11-1:16</td><td style="padding: 8px 10px; border: 1px solid var(--border); text-align: center;">中近景</td><td style="padding: 8px 10px; border: 1px solid var(--border);">桌面只剩空盘、纸巾、杯子和少量残渣。红发男人坐直身体面对镜头表情放松，最后露出轻微微笑。自然结束。</td></tr>
+                        </table>
                     </div>
                 </div>
                 <div class="step" data-step="3">
                     <h4>三、视频生成与拼接</h4>
                     <div class="step-content">
-                        <strong>分段生成</strong> — 每段按分镜表生成约 6 秒片段，工具：可灵 / Runway / Sora。<br><br>
-                        <strong>剪映拼接</strong> — 各段按顺序导入，统一硬切转场，确认无字幕无 logo 无水印。<br><br>
-                        <strong>音效处理</strong> — 叠加咀嚼声、吞咽声、食物断裂声等 ASMR 音效，背景音控制在 -20dB 以下。
+                        <strong>3.1 分段生成</strong><br>
+                        每段按分镜表生成约 6 秒片段，工具：可灵 / Runway / Sora。<br><br>
+                        <strong>3.2 剪映拼接</strong><br>
+                        • 将各段按分镜顺序导入剪映<br>
+                        • 转场：全部使用硬切，不加任何过渡特效<br>
+                        • 检查：确认无字幕、无 logo、无水印<br><br>
+                        <strong>3.3 音效处理</strong><br>
+                        叠加咀嚼声、吞咽声、食物断裂声等 ASMR 音效，背景音量控制在 -20dB 以下。
                     </div>
                 </div>
                 <div class="step" data-step="4">
                     <h4>四、统一要求</h4>
                     <div class="step-content">
-                        9:16 竖屏 · 写实质感 · 人物一致 · 背景一致 · 正面固定机位 · 全部硬切 · 无字幕 · 食物真实油亮<br><br>
-                        <strong>全片严格遵守：</strong>同一人设、同一服装（紫色缎面衬衫+透明手套）、同一暖色室内背景、无任何文字叠加与 logo。
+                        <table style="width:100%; border-collapse: collapse; font-size: 13px; margin: 8px 0;">
+                            <tr style="background: var(--accent); color: #fff;">
+                                <th style="padding: 8px 12px; border: 1px solid var(--border); text-align: left;">维度</th>
+                                <th style="padding: 8px 12px; border: 1px solid var(--border); text-align: left;">标准</th>
+                            </tr>
+                            <tr><td style="padding: 8px 12px; border: 1px solid var(--border); font-weight: 600;">画幅</td><td style="padding: 8px 12px; border: 1px solid var(--border);">9:16 竖屏</td></tr>
+                            <tr style="background: #fff;"><td style="padding: 8px 12px; border: 1px solid var(--border); font-weight: 600;">风格</td><td style="padding: 8px 12px; border: 1px solid var(--border);">写实照片质感，不卡通，不夸张变形</td></tr>
+                            <tr><td style="padding: 8px 12px; border: 1px solid var(--border); font-weight: 600;">人物一致性</td><td style="padding: 8px 12px; border: 1px solid var(--border);">同一个人设、同一张脸、同一套服装（紫色缎面衬衫+透明手套）</td></tr>
+                            <tr style="background: #fff;"><td style="padding: 8px 12px; border: 1px solid var(--border); font-weight: 600;">背景一致性</td><td style="padding: 8px 12px; border: 1px solid var(--border);">同一间暖色室内餐厅/厨房</td></tr>
+                            <tr><td style="padding: 8px 12px; border: 1px solid var(--border); font-weight: 600;">机位</td><td style="padding: 8px 12px; border: 1px solid var(--border);">全部正面固定机位</td></tr>
+                            <tr style="background: #fff;"><td style="padding: 8px 12px; border: 1px solid var(--border); font-weight: 600;">转场</td><td style="padding: 8px 12px; border: 1px solid var(--border);">全部硬切</td></tr>
+                            <tr><td style="padding: 8px 12px; border: 1px solid var(--border); font-weight: 600;">字幕</td><td style="padding: 8px 12px; border: 1px solid var(--border); color: #ff2442; font-weight: 700;">无字幕。无任何文字叠加、无 logo、无水印</td></tr>
+                            <tr style="background: #fff;"><td style="padding: 8px 12px; border: 1px solid var(--border); font-weight: 600;">食物</td><td style="padding: 8px 12px; border: 1px solid var(--border);">真实油亮，肉类、蘸料、柠檬、冰饮和空盘在对应镜头中准确出现</td></tr>
+                        </table>
                     </div>
                 </div>
                 <div class="step" data-step="5">
