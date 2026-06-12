@@ -289,6 +289,83 @@
 
         </div>
 
+        <div class="section" id="tech">
+            <h2>九、技术架构与搭建方式</h2>
+
+            <h3>核心功能模块</h3>
+            <table style="width:100%; border-collapse: collapse; margin: 20px 0; font-size: 14px;">
+                <tr style="background: var(--accent); color: #fff;">
+                    <th style="padding: 12px 16px; text-align: left; border: 1px solid var(--border);">模块</th>
+                    <th style="padding: 12px 16px; text-align: left; border: 1px solid var(--border);">功能</th>
+                </tr>
+                <tr><td style="padding: 10px 16px; border: 1px solid var(--border); font-weight: 600;">剧本解析引擎</td><td style="padding: 10px 16px; border: 1px solid var(--border);">智能拆解剧本为场景/分镜/对白，自动识别角色、情绪、镜头语言</td></tr>
+                <tr style="background: #fff;"><td style="padding: 10px 16px; border: 1px solid var(--border); font-weight: 600;">角色一致性系统</td><td style="padding: 10px 16px; border: 1px solid var(--border);">6 层身份锚点确保角色跨分镜外观一致，管理角色圣经 + 参考图绑定</td></tr>
+                <tr><td style="padding: 10px 16px; border: 1px solid var(--border); font-weight: 600;">场景生成</td><td style="padding: 10px 16px; border: 1px solid var(--border);">多视角联合图生成，场景描述自动转视觉提示词</td></tr>
+                <tr style="background: #fff;"><td style="padding: 10px 16px; border: 1px solid var(--border); font-weight: 600;">专业分镜系统</td><td style="padding: 10px 16px; border: 1px solid var(--border);">电影级摄影参数（景别/机位/运动），一键切换 2D/3D/写实风格</td></tr>
+                <tr><td style="padding: 10px 16px; border: 1px solid var(--border); font-weight: 600;">S 级（Seedance 2.0）</td><td style="padding: 10px 16px; border: 1px solid var(--border);">多镜头合并生成连贯叙事视频，支持图片/视频/音频多模态引用</td></tr>
+                <tr style="background: #fff;"><td style="padding: 10px 16px; border: 1px solid var(--border); font-weight: 600;">批量化工作流</td><td style="padding: 10px 16px; border: 1px solid var(--border);">一键全流程 + 多任务并行队列 + 自动重试</td></tr>
+                <tr><td style="padding: 10px 16px; border: 1px solid var(--border); font-weight: 600;">多供应商 AI 调度</td><td style="padding: 10px 16px; border: 1px solid var(--border);">API Key 轮询负载均衡，任务队列管理</td></tr>
+            </table>
+
+            <h3>技术架构</h3>
+            <table style="width:100%; border-collapse: collapse; margin: 20px 0; font-size: 14px;">
+                <tr style="background: var(--accent); color: #fff;">
+                    <th style="padding: 12px 16px; text-align: left; border: 1px solid var(--border);">层级</th>
+                    <th style="padding: 12px 16px; text-align: left; border: 1px solid var(--border);">技术</th>
+                </tr>
+                <tr><td style="padding: 10px 16px; border: 1px solid var(--border); font-weight: 600;">桌面框架</td><td style="padding: 10px 16px; border: 1px solid var(--border);">Electron 30</td></tr>
+                <tr style="background: #fff;"><td style="padding: 10px 16px; border: 1px solid var(--border); font-weight: 600;">前端框架</td><td style="padding: 10px 16px; border: 1px solid var(--border);">React 18 + TypeScript</td></tr>
+                <tr><td style="padding: 10px 16px; border: 1px solid var(--border); font-weight: 600;">构建工具</td><td style="padding: 10px 16px; border: 1px solid var(--border);">electron-vite（Vite 5）</td></tr>
+                <tr style="background: #fff;"><td style="padding: 10px 16px; border: 1px solid var(--border); font-weight: 600;">状态管理</td><td style="padding: 10px 16px; border: 1px solid var(--border);">Zustand 5</td></tr>
+                <tr><td style="padding: 10px 16px; border: 1px solid var(--border); font-weight: 600;">UI 组件</td><td style="padding: 10px 16px; border: 1px solid var(--border);">Radix UI + Tailwind CSS 4</td></tr>
+                <tr style="background: #fff;"><td style="padding: 10px 16px; border: 1px solid var(--border); font-weight: 600;">AI 核心</td><td style="padding: 10px 16px; border: 1px solid var(--border);">自研提示词编译引擎 + 多供应商任务调度</td></tr>
+            </table>
+
+            <h3>项目结构</h3>
+            <pre style="background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; font-size: 13px; line-height: 1.7; overflow-x: auto; margin: 16px 0;">
+moyin-creator/
+├── electron/               # Electron 主进程
+│   ├── main.ts             # 存储管理、文件系统、协议处理
+│   └── preload.ts          # 安全桥接层
+├── src/
+│   ├── components/panels/  # 五大板块 UI（剧本/角色/场景/分镜/导演）
+│   ├── stores/             # Zustand 全局状态管理
+│   ├── lib/                # AI 调度、图片管理、路由
+│   └── packages/ai-core/   # AI 核心引擎
+├── build/                  # 打包资源
+└── scripts/                # 构建脚本
+            </pre>
+
+            <h3>本地搭建步骤</h3>
+            <div class="highlight-box">
+                <div class="label">环境要求</div>
+                <p>Node.js ≥ 18 + npm ≥ 9</p>
+            </div>
+            <pre style="background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; font-size: 13px; line-height: 1.7; overflow-x: auto; margin: 16px 0;">
+# 安装依赖
+npm install
+
+# 启动开发模式
+npm run dev
+
+# 配置 API Key（在设置面板填入）
+# 打包 Windows 安装程序
+npm run build
+            </pre>
+
+            <h3>关键设计特点</h3>
+            <ul>
+                <li><strong>Electron 桌面应用</strong> — 跨平台，本地文件系统访问，大数据处理。非技术用户「下载安装即可用」，无需配置环境或命令行操作。</li>
+                <li><strong>React + TypeScript 前端</strong> — 五个主面板各对应一个核心创作环节，通过 Zustand 实现多面板间的数据共享：角色信息在剧本面板→场景面板→分镜面板之间自动流转。</li>
+                <li><strong>AI Core 引擎</strong> — 封装了提示词编译、角色圣经维护、多供应商任务轮询等复杂逻辑，上层 UI 只需调用简单 API 即可触发 AI 任务。</li>
+                <li><strong>Seedance 2.0 集成</strong> — 最新的多模态视频生成技术，支持图像/视频/音频混合引用，通过统一抽象层屏蔽各供应商 API 差异。</li>
+                <li><strong>本地优先，云端为辅</strong> — 核心数据（角色圣经、剧本、分镜表、参考图）存储在本地，AI 生成通过 API 发送到云端执行，支持离线编辑、联网后一键提交。</li>
+            </ul>
+            <p style="color: var(--text-sub); font-size: 15px;">本地源码在 <code style="background: #f0f0f2; padding: 2px 8px; border-radius: 4px;">D:\moyin-creator\</code>，<code style="background: #f0f0f2; padding: 2px 8px; border-radius: 4px;">npm run dev</code> 即可启动。</p>
+        </div>
+
+
+
         <div class="footer">
             <span style="color: var(--text-sub); font-size: 14px;">徐佳婷 · 产品思考</span>
             <a href="https://xuduouo.github.io/jiating-portfolio/">← 返回 Portfolio</a>
